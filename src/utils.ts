@@ -9,7 +9,6 @@ import type { Config } from './config.js';
  */
 export const getOs = () => {
 	if (process.platform === 'win32') return 'WIN';
-	else if (process.platform === 'darwin') return 'MACOS';
 	else if (process.platform === 'linux') return 'LINUX';
 	return 'UNDEFINED';
 };
@@ -17,24 +16,24 @@ export const getOs = () => {
 export const getSlash = getOs() === 'WIN' ? '\\' : '/';
 
 /**
- * Find the `bd-scss.config.js` file of the current working directory.
+ * Find the `scss-compile.config.js` file of the current working directory.
  */
 export const getConfig = async () => {
-	const find = path.join(process.cwd(), 'bd-scss.config.js');
+	const find = path.join(process.cwd(), 'scss-compile.config.js');
 
 	try {
 		let config = (await import((getOs() === 'WIN' ? 'file://' : '') + find)).default as Config;
 		return config;
 	} catch (err) {
 		log.error(
-			`Cannot find ${log.code('bd-scss.config.js')} in the root of your directory.\n\n` +
+			`Cannot find ${log.code('scss-compile.config.js')} in the root of your directory.\n\n` +
 				`If you do have a config file, make sure you include ${log.code('type": "module', '"')} in your ${log.code('package.json')} file.`
 		);
 	}
 };
 
 /**
- * Construct the meta given by the `bd-scss.config.js` file.
+ * Construct the meta given by the `scss-compile.config.js` file.
  */
 export const generateMeta = async () => {
 	const config = await getConfig();
@@ -57,16 +56,12 @@ export const getDataFolder = () => {
 	let folder: string;
 
 	if (getOs() === 'WIN') folder = devPath || path.resolve(process.env.APPDATA!, 'BetterDiscord', 'themes');
-	else if (getOs() === 'MACOS')
-		folder = devPath || path.resolve(process.env.HOME!, 'Library', 'Application Support', 'BetterDiscord', 'themes');
 	else if (getOs() === 'LINUX') folder = devPath || path.resolve(process.env.HOME!, '.config', 'BetterDiscord', 'themes');
 	else throw new Error('Cannot determine your OS.');
 
 	if (!fs.existsSync(getPath(folder))) {
 		log.error(`Directory does not exist: ${log.code('`' + getPath(folder) + '`')}`);
 	}
-
-	if (folder[0] === '~') folder = process.env.HOME! + folder.substring(1);
 
 	return folder;
 };
@@ -84,7 +79,7 @@ export const getPath = (...val: string[]) => {
 export const getMissingMeta = (meta: Record<string, any>) => {
 	const keys = Object.keys(meta);
 
-	const requiredMeta = ['name', 'author', 'description', 'version', 'source'];
+	const requiredMeta = ['name', 'scss', 'repo', 'version'];
 	let missing: string[] = [];
 
 	requiredMeta.forEach((requiredKey) => {
