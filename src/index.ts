@@ -20,11 +20,11 @@ prog
 
 		try {
 			// Bullds the .theme.css file for end users to download and install.
-			await compile({
-				target: getPath(config?.dist?.target || DEFAULTS.dist.target),
-				output: getPath(config?.dist?.output || DEFAULTS.dist.output),
-				mode: 'dist'
-			});
+			// await compile({
+			// 	target: getPath(config?.dist?.target || DEFAULTS.dist.target),
+			// 	output: getPath(config?.dist?.output || DEFAULTS.dist.output),
+			// 	mode: 'dist'
+			// });
 
 			// Builds the "base" .css file to be @import'd
 			await compile({
@@ -55,12 +55,12 @@ prog
 
 prog
 	.command('dev')
-	.describe('Watch the SRC folder for changes and autocompile them to the BetterDiscord themes folder.')
+	.describe('Watch the scss folder for changes and autocompile them to the BetterDiscord themes folder.')
 	.action(async () => {
 		chokidar
-			.watch('src', { usePolling: true })
+			.watch('scss', { usePolling: true })
 			.on('ready', () => {
-				log.info(`\nWatching: ${log.code('src')} folder.` + `\nOutput: ${log.code(config?.dev?.output || DEFAULTS.dev.output)}\n`, 'DEV');
+				log.info(`\nWatching: ${log.code('scss')} folder.` + `\nOutput: ${log.code(config?.dev?.output || DEFAULTS.dev.output)}\n`, 'DEV');
 			})
 			.on('change', async () => {
 				try {
