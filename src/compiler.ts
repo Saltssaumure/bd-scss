@@ -41,7 +41,8 @@ export default async (options: Options) => {
 	log.info(`Building ${log.code(options.target)} file...`);
 
 	// Check if path exists, if not make it.
-	if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+	if (!fs.existsSync(dirPath)) log.error(`Cannot find path ${dirPath}`);
+	// if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
 
 	// Compile and parse css.
 	const css = sass.compile(options.target, {
