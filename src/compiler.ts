@@ -26,9 +26,9 @@ if (missingMeta.length > 0) log.error(`Your ${log.code("meta")} object is missin
 
 export default async (options: Options) => {
     const startTime = performance.now();
-    const isTheme = options.mode === "build" || false;
+    const isTheme = options.mode === "dev" || false;
     const fileName =
-        options.mode !== "addon" ? `${config?.meta.scss}${isTheme ? ".min" : ".theme"}.css` : options.output.split(getSlash).pop()!;
+        options.mode !== "addon" ? `${config?.meta.scss}${isTheme ? ".theme" : ".min"}.css` : options.output.split(getSlash).pop()!;
     const dirPath = options.output
         .split(getSlash)
         .filter((el) => !el.endsWith(".css"))
@@ -44,6 +44,7 @@ export default async (options: Options) => {
 
     // Compile and parse css.
     const css = sass.compile(options.target, {
+        style: isTheme ? "expanded" : "compressed",
         charset: false,
         loadPaths: ["node_modules"]
     }).css;
