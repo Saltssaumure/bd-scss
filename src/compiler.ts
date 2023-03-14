@@ -11,9 +11,9 @@ import { DEFAULTS } from './defaults.js';
 import log from './log.js';
 
 interface Options {
-	target: string;
-	output: string;
-	mode?: 'build' | 'dev' | 'addon';
+    target: string;
+    output: string;
+    mode?: 'build' | 'dev' | 'addon';
 }
 
 const config = await getConfig();
@@ -25,53 +25,53 @@ if (!meta) log.error(`Your ${log.code('scss-compile.config.js')} file is missing
 if (missingMeta.length > 0) log.error(`Your ${log.code('meta')} object is missing the following requires properties:\n` + missingMeta);
 
 export default async (options: Options) => {
-	const startTime = performance.now();
-	const isTheme = options.mode === 'build' || false;
-	const fileName =
-		options.mode !== 'addon'
-			? `${config?.meta.scss}${isTheme ? '.min' : '.theme'}.css`
-			: options.output.split(getSlash).pop()!;
-	const dirPath = options.output
-		.split(getSlash)
-		.filter((el) => !el.endsWith('.css'))
-		.join(getSlash);
+    const startTime = performance.now();
+    const isTheme = options.mode === 'build' || false;
+    const fileName =
+        options.mode !== 'addon'
+            ? `${config?.meta.scss}${isTheme ? '.min' : '.theme'}.css`
+            : options.output.split(getSlash).pop()!;
+    const dirPath = options.output
+        .split(getSlash)
+        .filter((el) => !el.endsWith('.css'))
+        .join(getSlash);
 
-	// // Check if target file exists.
-	if (!fs.existsSync(options.target)) log.error(`Cannot find the target file ${log.code(options.target)}`);
+    // // Check if target file exists.
+    if (!fs.existsSync(options.target)) log.error(`Cannot find the target file ${log.code(options.target)}`);
 
-	log.info(`Building ${log.code(options.target)} file...`);
+    log.info(`Building ${log.code(options.target)} file...`);
 
-	// Check if path exists.
-	if (!fs.existsSync(dirPath)) log.error(`Cannot find path ${dirPath}`);
+    // Check if path exists.
+    if (!fs.existsSync(dirPath)) log.error(`Cannot find path ${dirPath}`);
 
-	// Compile and parse css.
-	const css = sass.compile(options.target, {
-		charset: false,
-		loadPaths: ['node_modules']
-	}).css;
+    // Compile and parse css.
+    const css = sass.compile(options.target, {
+        charset: false,
+        loadPaths: ['node_modules']
+    }).css;
 
-	const postcss = new Processor([autoprefixer]).process(css);
-	const parsedcss = postcss.css;
+    const postcss = new Processor([autoprefixer]).process(css);
+    const parsedcss = postcss.css;
 
-	let generatedFile: string | undefined = '';
+    let generatedFile: string | undefined = '';
 
-	if (isTheme) {
-		generatedFile = await generateMeta();
-	}
-	generatedFile += parsedcss;
+    if (isTheme) {
+        generatedFile = await generateMeta();
+    }
+    generatedFile += parsedcss;
 
-	const endTime = performance.now();
+    const endTime = performance.now();
 
-	if (!generatedFile) {
-		log.error('Could not generate file');
-		return;
-	}
+    if (!generatedFile) {
+        log.error('Could not generate file');
+        return;
+    }
 
-	// Write file to disk.
-	try {
-		fs.writeFileSync(path.join(dirPath, fileName.replace(/ /g, '')), generatedFile);
-		log.success(`Built in ${(endTime - startTime).toFixed()}ms`);
-	} catch (error) {
-		log.error(error);
-	}
+    // Write file to disk.
+    try {
+        fs.writeFileSync(path.join(dirPath, fileName.replace(/ /g, '')), generatedFile);
+        log.success(`Built in ${(endTime - startTime).toFixed()}ms`);
+    } catch (error) {
+        log.error(error);
+    }
 };
