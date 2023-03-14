@@ -1,19 +1,19 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-import sass from 'sass';
-import { Processor } from 'postcss';
-import autoprefixer from 'autoprefixer';
+import sass from "sass";
+import { Processor } from "postcss";
+import autoprefixer from "autoprefixer";
 
-import { getConfig, getMissingMeta, getSlash } from './utils.js';
-import { generateMeta } from './genMeta.js';
-import { DEFAULTS } from './defaults.js';
-import log from './log.js';
+import { getConfig, getMissingMeta, getSlash } from "./utils.js";
+import { generateMeta } from "./genMeta.js";
+import { DEFAULTS } from "./defaults.js";
+import log from "./log.js";
 
 interface Options {
     target: string;
     output: string;
-    mode?: 'build' | 'dev' | 'addon';
+    mode?: "build" | "dev" | "addon";
 }
 
 const config = await getConfig();
@@ -21,19 +21,17 @@ const config = await getConfig();
 const { meta } = config!;
 const missingMeta = getMissingMeta(meta);
 
-if (!meta) log.error(`Your ${log.code('scss-compile.config.js')} file is missing the ${log.code('meta')} object.`);
-if (missingMeta.length > 0) log.error(`Your ${log.code('meta')} object is missing the following requires properties:\n` + missingMeta);
+if (!meta) log.error(`Your ${log.code("scss-compile.config.js")} file is missing the ${log.code("meta")} object.`);
+if (missingMeta.length > 0) log.error(`Your ${log.code("meta")} object is missing the following requires properties:\n` + missingMeta);
 
 export default async (options: Options) => {
     const startTime = performance.now();
-    const isTheme = options.mode === 'build' || false;
+    const isTheme = options.mode === "build" || false;
     const fileName =
-        options.mode !== 'addon'
-            ? `${config?.meta.scss}${isTheme ? '.min' : '.theme'}.css`
-            : options.output.split(getSlash).pop()!;
+        options.mode !== "addon" ? `${config?.meta.scss}${isTheme ? ".min" : ".theme"}.css` : options.output.split(getSlash).pop()!;
     const dirPath = options.output
         .split(getSlash)
-        .filter((el) => !el.endsWith('.css'))
+        .filter((el) => !el.endsWith(".css"))
         .join(getSlash);
 
     // // Check if target file exists.
@@ -47,13 +45,13 @@ export default async (options: Options) => {
     // Compile and parse css.
     const css = sass.compile(options.target, {
         charset: false,
-        loadPaths: ['node_modules']
+        loadPaths: ["node_modules"]
     }).css;
 
     const postcss = new Processor([autoprefixer]).process(css);
     const parsedcss = postcss.css;
 
-    let generatedFile: string | undefined = '';
+    let generatedFile: string | undefined = "";
 
     if (isTheme) {
         generatedFile = await generateMeta();
@@ -63,13 +61,13 @@ export default async (options: Options) => {
     const endTime = performance.now();
 
     if (!generatedFile) {
-        log.error('Could not generate file');
+        log.error("Could not generate file");
         return;
     }
 
     // Write file to disk.
     try {
-        fs.writeFileSync(path.join(dirPath, fileName.replace(/ /g, '')), generatedFile);
+        fs.writeFileSync(path.join(dirPath, fileName.replace(/ /g, "")), generatedFile);
         log.success(`Built in ${(endTime - startTime).toFixed()}ms`);
     } catch (error) {
         log.error(error);

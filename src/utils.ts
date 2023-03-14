@@ -1,33 +1,35 @@
-import path from 'path';
-import fs from 'fs';
-import log from './log.js';
+import path from "path";
+import fs from "fs";
+import log from "./log.js";
 
-import type { Config } from './config.js';
+import type { Config } from "./config.js";
 
 /**
  * Get the current OS.
  */
 export const getOs = () => {
-    if (process.platform === 'win32') return 'WIN';
-    else if (process.platform === 'linux') return 'LINUX';
-    return 'UNDEFINED';
+    if (process.platform === "win32") return "WIN";
+    else if (process.platform === "linux") return "LINUX";
+    return "UNDEFINED";
 };
 
-export const getSlash = getOs() === 'WIN' ? '\\' : '/';
+export const getSlash = getOs() === "WIN" ? "\\" : "/";
 
 /**
  * Find the `scss-compile.config.js` file of the current working directory.
  */
 export const getConfig = async () => {
-    const find = path.join(process.cwd(), 'scss-compile.config.js');
+    const find = path.join(process.cwd(), "scss-compile.config.js");
 
     try {
-        let config = (await import((getOs() === 'WIN' ? 'file://' : '') + find)).default as Config;
+        let config = (await import((getOs() === "WIN" ? "file://" : "") + find)).default as Config;
         return config;
     } catch (err) {
         log.error(
-            `Cannot find ${log.code('scss-compile.config.js')} at ${find}.\n\n` +
-                `If you do have a config file, make sure you include ${log.code('type": "module', '"')} in your ${log.code('package.json')} file.\n\n` +
+            `Cannot find ${log.code("scss-compile.config.js")} at ${find}.\n\n` +
+                `If you do have a config file, make sure you include ${log.code('type": "module', '"')} in your ${log.code(
+                    "package.json"
+                )} file.\n\n` +
                 `${err}`
         );
     }
@@ -38,17 +40,17 @@ export const getConfig = async () => {
  */
 export const getDataFolder = () => {
     // Fix GitHub trying to run and erroring out.
-    if (process.argv[2] === 'build') return 'dist';
+    if (process.argv[2] === "build") return "dist";
 
     let devPath: string | undefined;
     let folder: string;
 
-    if (getOs() === 'WIN') folder = devPath || path.resolve(process.env.APPDATA!, 'BetterDiscord', 'themes');
-    else if (getOs() === 'LINUX') folder = devPath || path.resolve(process.env.HOME!, '.config', 'BetterDiscord', 'themes');
-    else throw new Error('Cannot determine your OS.');
+    if (getOs() === "WIN") folder = devPath || path.resolve(process.env.APPDATA!, "BetterDiscord", "themes");
+    else if (getOs() === "LINUX") folder = devPath || path.resolve(process.env.HOME!, ".config", "BetterDiscord", "themes");
+    else throw new Error("Cannot determine your OS.");
 
     if (!fs.existsSync(getPath(folder))) {
-        log.error(`Directory does not exist: ${log.code('`' + getPath(folder) + '`')}`);
+        log.error(`Directory does not exist: ${log.code("`" + getPath(folder) + "`")}`);
     }
 
     return folder;
@@ -67,7 +69,7 @@ export const getPath = (...val: string[]) => {
 export const getMissingMeta = (meta: Record<string, any>) => {
     const keys = Object.keys(meta);
 
-    const requiredMeta = ['name', 'scss', 'repo', 'version'];
+    const requiredMeta = ["name", "scss", "repo", "version"];
     let missing: string[] = [];
 
     requiredMeta.forEach((requiredKey) => {

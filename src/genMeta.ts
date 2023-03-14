@@ -1,4 +1,4 @@
-import { DEFAULTS } from './defaults.js'
+import { DEFAULTS } from "./defaults.js";
 
 /**
  * Construct the meta given by the `scss-compile.config.js` file.
@@ -6,5 +6,5 @@ import { DEFAULTS } from './defaults.js'
 export const generateMeta = async () => {
     return `/**\n${Object.entries(DEFAULTS.meta)
         .map(([key, value]) => ` * @${key} ${value}\n`)
-        .join('')}*/\n\n`;
+        .join("")}*/\n\n`;
 };
