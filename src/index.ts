@@ -14,22 +14,16 @@ const prog = sade('bd-scss');
 
 prog
 	.command('build')
-	.describe('Compiles the `dist` and `base` config objects.')
+	.describe('Compiles theme for publishing.')
 	.action(async () => {
 		log.info(`Running ${log.code('build')} script...`);
 
 		try {
-			// Bullds the .theme.css file for end users to download and install.
-			// await compile({
-			// 	target: getPath(config?.dist?.target || DEFAULTS.dist.target),
-			// 	output: getPath(config?.dist?.output || DEFAULTS.dist.output),
-			// 	mode: 'dist'
-			// });
-
-			// Builds the "base" .css file to be @import'd
+			// Builds the .min.css file for import
 			await compile({
-				target: getPath(config?.base?.target || DEFAULTS.base.target),
-				output: getPath(config?.base?.output || DEFAULTS.base.output)
+				target: getPath(DEFAULTS.build.target),
+				output: getPath(DEFAULTS.build.output),
+				mode: 'build'
 			});
 		} catch (err) {
 			log.error(err);
@@ -60,13 +54,13 @@ prog
 		chokidar
 			.watch('scss', { usePolling: true })
 			.on('ready', () => {
-				log.info(`\nWatching: ${log.code('scss')} folder.` + `\nOutput: ${log.code(config?.dev?.output || DEFAULTS.dev.output)}\n`, 'DEV');
+				log.info(`\nWatching: ${log.code('scss')} folder.` + `\nOutput: ${log.code(DEFAULTS.dev.output)}\n`, 'DEV');
 			})
 			.on('change', async () => {
 				try {
 					await compile({
-						target: getPath(config?.dev?.target || DEFAULTS.dev.target),
-						output: getPath(config?.dev?.output || DEFAULTS.dev.output),
+						target: getPath(DEFAULTS.dev.target),
+						output: getPath(DEFAULTS.dev.output),
 						mode: 'dev'
 					});
 				} catch (err) {
