@@ -1,73 +1,44 @@
 # bd-scss
 
-Simple package to create themes for BetterDiscord using SCSS.
-
-<br>
+Modified version of Gibbu's SCSS compiler for BetterDiscord themes.
 
 ## Usage
+You most likely want to use the original package instead. If not...
 
-Install the package with:
-
+1. Get and link this package locally.
 ```bash
-npm install bd-scss
-# or
-yarn add bd-scss
-# or
-pnpm add bd-scss
+git clone git@github.com:Saltssaumure/bd-scss.git
+cd bd-scss
+npm run build
+npm link
+cd [theme project location]
+npm link bd-scss
 ```
 
-Then create a `bd-scss.config.js` file in the root of your project folder with the following:
+2. Add `scss-compile.config.js` file in the root of your project folder with the following:
 
 ```js
 /** @type {import('bd-scss/lib/config').Config} */
 export default {
-	meta: {
-		name: 'Cooltheme',
-		author: 'Gibbu',
-		version: '1.0.0',
-		description: 'My cool theme',
-		source: 'https://github.com/Gibbu/Cooltheme',
-	},
-};
+    // Theme metadata
+    meta: {
+        name: MyTheme,               // Official name of the theme.
+        scss: main,                  // Name of the base scss file.
+        repo: mytheme-discord-theme, // Name of the theme repository.
+        version: 1.0                 // Version number.
+    };
+    // Optional addons for the theme, if any exist.
+    addons: [
+        ["scss/stuff.scss", 'addons/stuff.css'], // Target, output.
+    ];
+}
 ```
-
-And then use the `bd-scss` command followed by the script you wish to use.
-
+2. Commands for building theme in theme project folder:
 ```bash
-bd-scss dev # will build to your BetterDiscord themes folder or if you've provided a path in the dev option.
+bd-scss dev # will build .theme.css to your BetterDiscord themes folder.
 
-bd-scss build # will build the necessary files to distribute your theme.
+bd-scss build # will build .min.css and addons to project root folder.
 ```
-
-> **NOTE**: Make sure you have `"type": "module"` set in your `package.json`.
-
-<br>
-
-## Compiler API
-
-| Property     | Type                 | Required | Description                                                                                                                                    |
-| ------------ | -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `meta`       | Object               | true     | The BetterDiscord theme/plugin META. View all avaiable meta [HERE](https://github.com/BetterDiscord/BetterDiscord/wiki/Plugin-and-Theme-METAs) |
-| `dev`        | Object               | false    | The target and output path of the dev file.                                                                                                    |
-| `dist`       | Object               | false    | The target and output path of the dist file.                                                                                                   |
-| `base`       | Object               | false    | The target and output path of the base file.                                                                                                   |
-| `fileName`   | string               | false    | The name of the file to be compiled. This will default to your `meta.name` if this option is not provided.                                     |
-| `addons`     | ([string, string])[] | false    | Any addons that should be compiled separately from your theme files.                                                                           |
-| `baseImport` | string               | false    | The `@import` url used in the .theme.css file.                                                                                                 |
-
-All `dev`, `dist`, and `base` objects contain a `target` and `output` properties, and are relative to the project directory.  
-Execpt of the `dev.output`, that is an absolute path allowing you to change the location of the BetterDiscord themes folder.
-
-> Example: `C:\Users\Gibbu\AppData\Roaming\BetterDiscord\themes`
-
-<br>
-
-## Examples
-
-- [DiscordStyles/SoftX](https://github.com/DiscordStyles/SoftX)
-- [DiscordStyles/Slate](https://github.com/DiscordStyles/Slate)
-
-<br>
 
 ## License
 
