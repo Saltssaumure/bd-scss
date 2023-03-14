@@ -4,17 +4,20 @@ const config = await getConfig();
 const dataFolder = getDataFolder();
 
 export const DEFAULTS = {
-	dev: {
-		target: 'src/dev.scss',
-		output: dataFolder
-	},
-	dist: {
-		target: 'src/dist.scss',
-		output: 'dist'
-	},
-	base: {
-		target: 'src/base.scss',
-		output: 'dist'
-	},
-	baseImport: `https://${config?.meta.author.toLowerCase()}.github.io/${config?.meta.name}/${config?.meta.name}.css`
+    meta: {
+        name: "${config?.meta.name} - Test",
+        author: "Saltssaumure",
+        authorLink: "https://github.com/Saltssaumure",
+        version: "${config.meta.version}",
+        source: "https://github.com/Saltssaumure/${config?.meta.repo}",
+        description: "Get the autoupdater: https://github.com/Saltssaumure/${config?.meta.repo}/releases/tag/latest",
+    },
+    dev: {
+        target: 'src/{$config?.meta.scss}.scss',
+        output: dataFolder,
+    },
+    build: {
+        target: 'src/{$config?.meta.scss}.scss',
+        output: '',
+    },
 };
