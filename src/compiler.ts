@@ -5,7 +5,8 @@ import sass from 'sass';
 import { Processor } from 'postcss';
 import autoprefixer from 'autoprefixer';
 
-import { getConfig, generateMeta, getMissingMeta, getSlash } from './utils.js';
+import { getConfig, getMissingMeta, getSlash } from './utils.js';
+import { generateMeta } from './genMeta.js';
 import { DEFAULTS } from './defaults.js';
 import log from './log.js';
 
@@ -20,7 +21,7 @@ const config = await getConfig();
 const { meta } = config!;
 const missingMeta = getMissingMeta(meta);
 
-if (!meta) log.error(`Your ${log.code('bd-scss.config.js')} file is missing the ${log.code('meta')} object.`);
+if (!meta) log.error(`Your ${log.code('scss-compile.config.js')} file is missing the ${log.code('meta')} object.`);
 if (missingMeta.length > 0) log.error(`Your ${log.code('meta')} object is missing the following requires properties:\n` + missingMeta);
 
 export default async (options: Options) => {

@@ -26,23 +26,11 @@ export const getConfig = async () => {
 		return config;
 	} catch (err) {
 		log.error(
-			`Cannot find ${log.code('scss-compile.config.js')} in the root of your directory.\n\n` +
-				`If you do have a config file, make sure you include ${log.code('type": "module', '"')} in your ${log.code('package.json')} file.`
+			`Cannot find ${log.code('scss-compile.config.js')} at ${find}.\n\n` +
+				`If you do have a config file, make sure you include ${log.code('type": "module', '"')} in your ${log.code('package.json')} file.\n\n` +
+				`${err}`
 		);
 	}
-};
-
-/**
- * Construct the meta given by the `scss-compile.config.js` file.
- */
-export const generateMeta = async () => {
-	const config = await getConfig();
-
-	if (!config) return;
-
-	return `/**\n${Object.entries(config.meta)
-		.map(([key, value]) => ` * @${key} ${value}\n`)
-		.join('')}*/\n\n`;
 };
 
 /**
