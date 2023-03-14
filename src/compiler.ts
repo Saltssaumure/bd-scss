@@ -12,7 +12,7 @@ import log from './log.js';
 interface Options {
 	target: string;
 	output: string;
-	mode?: 'dist' | 'dev' | 'addon';
+	mode?: 'build' | 'dev' | 'addon';
 }
 
 const config = await getConfig();
@@ -25,10 +25,10 @@ if (missingMeta.length > 0) log.error(`Your ${log.code('meta')} object is missin
 
 export default async (options: Options) => {
 	const startTime = performance.now();
-	const isTheme = options.mode === 'dist' || options.mode === 'dev' || false;
+	const isTheme = options.mode === 'build' || false;
 	const fileName =
 		options.mode !== 'addon'
-			? `${config?.fileName || config?.meta.name}${isTheme ? '.theme' : ''}.css`
+			? `${config?.meta.scss}${isTheme ? '.min' : '.theme'}.css`
 			: options.output.split(getSlash).pop()!;
 	const dirPath = options.output
 		.split(getSlash)
@@ -40,9 +40,8 @@ export default async (options: Options) => {
 
 	log.info(`Building ${log.code(options.target)} file...`);
 
-	// Check if path exists, if not make it.
+	// Check if path exists.
 	if (!fs.existsSync(dirPath)) log.error(`Cannot find path ${dirPath}`);
-	// if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
 
 	// Compile and parse css.
 	const css = sass.compile(options.target, {
@@ -57,7 +56,6 @@ export default async (options: Options) => {
 
 	if (isTheme) {
 		generatedFile = await generateMeta();
-		if (options.mode === 'dist') generatedFile += `@import url('${config?.baseImport || DEFAULTS.baseImport}');\n\n`;
 	}
 	generatedFile += parsedcss;
 
