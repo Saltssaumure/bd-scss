@@ -10,7 +10,7 @@ export const DEFAULTS = {
         authorLink: `https://github.com/Saltssaumure`,
         version: `${config?.meta.version}`,
         source: `https://github.com/Saltssaumure/${config?.meta.repo}`,
-        description: `Get the autoupdater: https://github.com/Saltssaumure/${config?.meta.repo}/releases/tag/latest`
+        description: `Get the autoupdater: https://github.com/Saltssaumure/${config?.meta.repo}/releases/latest`
     },
     dev: {
         target: `scss/${config?.meta.scss}.scss`,
