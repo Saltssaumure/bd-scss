@@ -1,7 +1,7 @@
 {
-    "name": "bd-scss",
-    "version": "2.0.12",
-    "description": "Simple package to create themes using SCSS for BetterDiscord.",
+    "name": "salt-bd-scss",
+    "version": "1.0.0",
+    "description": "Edit of Gibbu's package to create themes using SCSS for BetterDiscord.",
     "type": "module",
     "keywords": [
         "bd-scss",
@@ -13,14 +13,14 @@
         "bd-scss": "lib/index.js"
     },
     "author": {
-        "name": "Gibbu",
-        "url": "https://gibbu.me"
+        "name": "Saltssaumure",
+        "url": "https://github.com/Saltssaumure"
     },
     "publishConfig": {
         "access": "public"
     },
     "repository": {
-        "url": "https://github.com/Gibbu/bd-scss.git",
+        "url": "https://github.com/Saltssaumure/bd-scss.git",
         "type": "git"
     },
     "license": "MIT",
