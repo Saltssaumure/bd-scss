@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
 
-import sass from "sass";
-import { Processor } from "postcss";
-import autoprefixer from "autoprefixer";
+import * as sass from 'sass';
+import { Processor } from 'postcss';
+import autoprefixer from 'autoprefixer';
 
 import { getConfig, getMissingMeta, getSlash } from "./utils.js";
 import { generateMeta } from "./genMeta.js";
