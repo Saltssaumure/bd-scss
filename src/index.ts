@@ -20,8 +20,8 @@ prog.command("build")
         try {
             // Builds the .min.css file for import
             await compile({
-                target: getPath(DEFAULTS.build.target),
-                output: getPath(DEFAULTS.build.output),
+                target: getPath(DEFAULTS("BetterDiscord").build.target),
+                output: getPath(DEFAULTS("BetterDiscord").build.output),
                 mode: "build"
             });
         } catch (err) {
@@ -52,13 +52,37 @@ prog.command("dev")
         chokidar
             .watch("scss", { usePolling: true })
             .on("ready", () => {
-                log.info(`\nWatching: ${log.code("scss")} folder.` + `\nOutput: ${log.code(DEFAULTS.dev.output)}\n`, "DEV");
+                log.info(
+                    `\nWatching: ${log.code("scss")} folder.` + `\nOutput: ${log.code(DEFAULTS("BetterDiscord").dev.output)}\n`,
+                    "DEV"
+                );
             })
             .on("change", async () => {
                 try {
                     await compile({
-                        target: getPath(DEFAULTS.dev.target),
-                        output: getPath(DEFAULTS.dev.output),
+                        target: getPath(DEFAULTS("BetterDiscord").dev.target),
+                        output: getPath(DEFAULTS("BetterDiscord").dev.output),
+                        mode: "dev"
+                    });
+                } catch (err) {
+                    log.error(err);
+                }
+            });
+    });
+
+prog.command("dev:vc")
+    .describe("Watch the scss folder for changes and autocompile them to the Vencord themes folder.")
+    .action(async () => {
+        chokidar
+            .watch("scss", { usePolling: true })
+            .on("ready", () => {
+                log.info(`\nWatching: ${log.code("scss")} folder.` + `\nOutput: ${log.code(DEFAULTS("Vencord").dev.output)}\n`, "DEV");
+            })
+            .on("change", async () => {
+                try {
+                    await compile({
+                        target: getPath(DEFAULTS("Vencord").dev.target),
+                        output: getPath(DEFAULTS("Vencord").dev.output),
                         mode: "dev"
                     });
                 } catch (err) {

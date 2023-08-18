@@ -36,17 +36,17 @@ export const getConfig = async () => {
 };
 
 /**
- * Get the BetterDiscord directory.
+ * Get the mod theme directory.
  */
-export const getDataFolder = () => {
+export const getDataFolder = (clientMod: string) => {
     // Fix GitHub trying to run and erroring out.
     if (process.argv[2] === "build") return "dist";
 
     let devPath: string | undefined;
     let folder: string;
 
-    if (getOs() === "WIN") folder = devPath || path.resolve(process.env.APPDATA!, "BetterDiscord", "themes");
-    else if (getOs() === "LINUX") folder = devPath || path.resolve(process.env.HOME!, ".config", "BetterDiscord", "themes");
+    if (getOs() === "WIN") folder = devPath || path.resolve(process.env.APPDATA!, clientMod, "themes");
+    else if (getOs() === "LINUX") folder = devPath || path.resolve(process.env.HOME!, ".config", clientMod, "themes");
     else throw new Error("Cannot determine your OS.");
 
     if (!fs.existsSync(getPath(folder))) {
