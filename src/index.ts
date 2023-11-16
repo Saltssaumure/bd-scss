@@ -98,15 +98,16 @@ prog.command("dev:vt")
             .watch("scss", { usePolling: true })
             .on("ready", () => {
                 log.info(
-                    `\nWatching: ${log.code("scss")} folder.` + `\nOutput: ${log.code(DEFAULTS("VencordDesktop").dev.output)}\n`,
+                    `\nWatching: ${log.code("scss")} folder.` +
+                        `\nOutput: ${log.code(DEFAULTS("VencordDesktop/VencordDesktop").dev.output)}\n`,
                     "DEV"
                 );
             })
             .on("change", async () => {
                 try {
                     await compile({
-                        target: getPath(DEFAULTS("VencordDesktop").dev.target),
-                        output: getPath(DEFAULTS("VencordDesktop").dev.output),
+                        target: getPath(DEFAULTS("VencordDesktop/VencordDesktop").dev.target),
+                        output: getPath(DEFAULTS("VencordDesktop/VencordDesktop").dev.output),
                         mode: "dev"
                     });
                 } catch (err) {
