@@ -91,4 +91,28 @@ prog.command("dev:vc")
             });
     });
 
+prog.command("dev:vt")
+    .describe("Watch the scss folder for changes and autocompile them to the Vesktop themes folder.")
+    .action(async () => {
+        chokidar
+            .watch("scss", { usePolling: true })
+            .on("ready", () => {
+                log.info(
+                    `\nWatching: ${log.code("scss")} folder.` + `\nOutput: ${log.code(DEFAULTS("VencordDesktop").dev.output)}\n`,
+                    "DEV"
+                );
+            })
+            .on("change", async () => {
+                try {
+                    await compile({
+                        target: getPath(DEFAULTS("VencordDesktop").dev.target),
+                        output: getPath(DEFAULTS("VencordDesktop").dev.output),
+                        mode: "dev"
+                    });
+                } catch (err) {
+                    log.error(err);
+                }
+            });
+    });
+
 prog.parse(process.argv);
