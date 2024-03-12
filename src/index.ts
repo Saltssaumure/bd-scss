@@ -97,17 +97,13 @@ prog.command("dev:vt")
         chokidar
             .watch("scss", { usePolling: true })
             .on("ready", () => {
-                log.info(
-                    `\nWatching: ${log.code("scss")} folder.` +
-                        `\nOutput: ${log.code(DEFAULTS("VencordDesktop/VencordDesktop").dev.output)}\n`,
-                    "DEV"
-                );
+                log.info(`\nWatching: ${log.code("scss")} folder.` + `\nOutput: ${log.code(DEFAULTS("vesktop").dev.output)}\n`, "DEV");
             })
             .on("change", async () => {
                 try {
                     await compile({
-                        target: getPath(DEFAULTS("VencordDesktop/VencordDesktop").dev.target),
-                        output: getPath(DEFAULTS("VencordDesktop/VencordDesktop").dev.output),
+                        target: getPath(DEFAULTS("vesktop").dev.target),
+                        output: getPath(DEFAULTS("vesktop").dev.output),
                         mode: "dev"
                     });
                 } catch (err) {

@@ -1,6 +1,6 @@
 {
     "name": "salt-bd-scss",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Edit of Gibbu's package to create themes using SCSS for BetterDiscord and Vencord.",
     "type": "module",
     "keywords": [
