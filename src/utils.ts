@@ -10,6 +10,7 @@ import type { Config } from "./config.js";
 export const getOs = () => {
     if (process.platform === "win32") return "WIN";
     else if (process.platform === "linux") return "LINUX";
+    else if (process.platform === "darwin") return "MACOS";
     return "UNDEFINED";
 };
 
@@ -47,6 +48,7 @@ export const getDataFolder = (clientMod: string) => {
 
     if (getOs() === "WIN") folder = devPath || path.resolve(process.env.APPDATA!, clientMod, "themes");
     else if (getOs() === "LINUX") folder = devPath || path.resolve(process.env.HOME!, ".config", clientMod, "themes");
+    else if (getOs() === "MACOS") folder = devPath || path.resolve(process.env.HOME!, "Library", "Application Support", clientMod, "themes");
     else throw new Error("Cannot determine your OS.");
 
     if (!fs.existsSync(getPath(folder))) {
